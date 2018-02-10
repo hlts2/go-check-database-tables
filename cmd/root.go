@@ -3,13 +3,24 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"time"
 
+	"github.com/briandowns/spinner"
+	"github.com/hlts2/go-check-database-tables/dao/databases/config"
+	"github.com/hlts2/go-check-database-tables/dao/factories"
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "go-check-database-tables",
 	Short: "A CLI Tool for checking database tables",
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := root(cmd, args); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	},
 }
 
 var host string
@@ -18,6 +29,7 @@ var user string
 var password string
 var databaseType string
 var database string
+var databaseTable string
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&host, "Host", "H", "localhost", "Host Name（localhost）")
@@ -26,6 +38,35 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&password, "Password", "P", "", "Password")
 	rootCmd.PersistentFlags().StringVarP(&databaseType, "type", "t", "mysql", "Database Type（mysql）")
 	rootCmd.PersistentFlags().StringVarP(&database, "database", "d", "", "Database Name")
+	rootCmd.Flags().StringVarP(&databaseTable, "Table", "T", "", "Database Table")
+}
+
+func root(cmd *cobra.Command, args []string) error {
+	c := config.Config{
+		Host:     host,
+		Port:     port,
+		User:     user,
+		Password: password,
+		Database: database,
+	}
+
+	progress := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+	progress.Start()
+
+	dao := factories.FactoryTableDao(databaseType, c)
+	describeTable, err := dao.GetTableDescribe(databaseTable)
+	if err != nil {
+		progress.Stop()
+		return err
+	}
+
+	writer := tablewriter.NewWriter(os.Stdout)
+	writer.SetHeader(describeTable.FieldName())
+	writer.Append(describeTable.FieldValue())
+	progress.Stop()
+	writer.Render()
+
+	return nil
 }
 
 //Execute run command

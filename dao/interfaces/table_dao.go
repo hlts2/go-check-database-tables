@@ -7,4 +7,5 @@ import (
 //TableDao is database table access interface
 type TableDao interface {
 	GetTables() (models.Tables, error)
+	GetTableDescribe(tableName string) (*models.DescribeTable, error)
 }
