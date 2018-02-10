@@ -29,6 +29,7 @@ var host string
 var port int
 var user string
 var password string
+var databaseType string
 var database string
 
 func init() {
@@ -36,6 +37,7 @@ func init() {
 	rootCmd.PersistentFlags().IntVarP(&port, "port", "p", 3306, "Port（3306）")
 	rootCmd.PersistentFlags().StringVarP(&user, "user", "u", "root", "User Name（root）")
 	rootCmd.PersistentFlags().StringVarP(&password, "Password", "P", "", "Password")
+	rootCmd.PersistentFlags().StringVarP(&databaseType, "type", "t", "mysql", "Database Type（mysql）")
 	rootCmd.PersistentFlags().StringVarP(&database, "database", "d", "", "Database Name")
 }
 
@@ -51,7 +53,7 @@ func root(cmd *cobra.Command, args []string) error {
 	progress := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 	progress.Start()
 
-	dao := factories.FactoryTableDao("mysql", c)
+	dao := factories.FactoryTableDao(databaseType, c)
 	tables, err := dao.GetTables()
 	if err != nil {
 		progress.Stop()
