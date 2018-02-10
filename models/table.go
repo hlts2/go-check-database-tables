@@ -22,11 +22,6 @@ type DescribeTable struct {
 	Extra   sql.NullString `db:"extra"`
 }
 
-//FieldName returns struct Field Name
-func (d DescribeTable) FieldName() []string {
-	return []string{"Field", "Type", "Null", "Key", "Default", "Extra"}
-}
-
 //FieldValue returns struct Field Value
 func (d DescribeTable) FieldValue() []string {
 	return []string{d.Field, d.Type, d.Null, d.Key.String, d.Default.String, d.Extra.String}
