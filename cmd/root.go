@@ -54,15 +54,18 @@ func root(cmd *cobra.Command, args []string) error {
 	progress.Start()
 
 	dao := factories.FactoryTableDao(databaseType, c)
-	describeTable, err := dao.GetTableDescribe(databaseTable)
+	describeTables, err := dao.GetTableDescribe(databaseTable)
 	if err != nil {
 		progress.Stop()
 		return err
 	}
 
 	writer := tablewriter.NewWriter(os.Stdout)
-	writer.SetHeader(describeTable.FieldName())
-	writer.Append(describeTable.FieldValue())
+	writer.SetHeader([]string{"Field", "Type", "Null", "Key", "Default", "Extra"})
+
+	for _, describeTable := range describeTables {
+		writer.Append(describeTable.FieldValue())
+	}
 	progress.Stop()
 	writer.Render()
 

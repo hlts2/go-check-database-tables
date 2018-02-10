@@ -14,12 +14,12 @@ type Tables []Table
 
 //DescribeTable represents a attributes of database table
 type DescribeTable struct {
-	Field   string         `db:"Field"`
-	Type    string         `db:"Type"`
-	Null    sql.NullString `db:"Null"`
-	Key     sql.NullString `db:"Key"`
-	Default sql.NullString `db:"Default"`
-	Extra   sql.NullString `db:"Extra"`
+	Field   string         `db:"field"`
+	Type    string         `db:"type"`
+	Null    string         `db:"null"`
+	Key     sql.NullString `db:"key"`
+	Default sql.NullString `db:"default"`
+	Extra   sql.NullString `db:"extra"`
 }
 
 //FieldName returns struct Field Name
@@ -29,7 +29,7 @@ func (d DescribeTable) FieldName() []string {
 
 //FieldValue returns struct Field Value
 func (d DescribeTable) FieldValue() []string {
-	return []string{d.Field, d.Type, d.Null.String, d.Key.String, d.Default.String, d.Extra.String}
+	return []string{d.Field, d.Type, d.Null, d.Key.String, d.Default.String, d.Extra.String}
 }
 
 //DescribeTables is DescribeTable slice

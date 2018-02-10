@@ -35,7 +35,7 @@ func (impl TableDaoImpl) GetTables() (models.Tables, error) {
 	return tables, nil
 }
 
-func (impl TableDaoImpl) GetTableDescribe(tableName string) (*models.DescribeTable, error) {
+func (impl TableDaoImpl) GetTableDescribe(tableName string) (models.DescribeTables, error) {
 	db, err := sql.Open("mysql", impl.DSN())
 	if err != nil {
 		return nil, err
@@ -43,13 +43,12 @@ func (impl TableDaoImpl) GetTableDescribe(tableName string) (*models.DescribeTab
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{}}
 	defer dbmap.Db.Close()
 
-	var describeTable models.DescribeTable
-	_, err = dbmap.Select(&describeTable, fmt.Sprintf("Describe %s", tableName))
+	var describeTables models.DescribeTables
+	_, err = dbmap.Select(&describeTables, fmt.Sprintf("Describe %s", tableName))
 	if err == sql.ErrNoRows {
 		return nil, nil
 	} else if err != nil {
 		return nil, err
 	}
-
-	return &describeTable, nil
+	return describeTables, err
 }
