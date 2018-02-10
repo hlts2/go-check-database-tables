@@ -27,9 +27,9 @@ func (impl TableDaoImpl) GetTables() (models.Tables, error) {
 	var tables models.Tables
 	_, err = dbmap.Select(&tables, fmt.Sprintf("SELECT table_name FROM information_schema.tables WHERE table_schema = %s", impl.DatabaseName()))
 	if err == sql.ErrNoRows {
-		return nil, err
-	} else if err != nil {
 		return nil, nil
+	} else if err != nil {
+		return nil, err
 	}
 
 	return tables, nil
