@@ -3,6 +3,7 @@ package config
 //DBConfig is Common processing of the DB
 type DBConfig interface {
 	DSN() string
+	DatabaseName() string
 }
 
 //Config is base DB Config struct

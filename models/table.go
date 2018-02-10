@@ -2,7 +2,7 @@ package models
 
 //Table represents a database table
 type Table struct {
-	Name string
+	Name string `db:"table_name"`
 }
 
 //Tables is Table Slice
