@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -27,7 +28,7 @@ var host string
 var port int
 var user string
 var password string
-var databaseType string
+var dbms string
 var database string
 var databaseTable string
 
@@ -36,7 +37,7 @@ func init() {
 	rootCmd.PersistentFlags().IntVarP(&port, "port", "p", 3306, "Port（3306）")
 	rootCmd.PersistentFlags().StringVarP(&user, "user", "u", "root", "User Name（root）")
 	rootCmd.PersistentFlags().StringVarP(&password, "Password", "P", "", "Password")
-	rootCmd.PersistentFlags().StringVarP(&databaseType, "type", "t", "mysql", "Database Type（mysql）")
+	rootCmd.PersistentFlags().StringVarP(&dbms, "type", "t", "mysql", "Database Management System（mysql）")
 	rootCmd.PersistentFlags().StringVarP(&database, "database", "d", "", "Database Name")
 	rootCmd.Flags().StringVarP(&databaseTable, "Table", "T", "", "Database Table")
 }
@@ -53,7 +54,10 @@ func root(cmd *cobra.Command, args []string) error {
 	progress := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 	progress.Start()
 
-	dao := factories.FactoryTableDao(databaseType, c)
+	dao := factories.FactoryTableDao(dbms, c)
+	if dao == nil {
+		return errors.New("Invalid Dabase Management System")
+	}
 	describeTables, err := dao.GetTableDescribe(databaseTable)
 	if err != nil {
 		progress.Stop()

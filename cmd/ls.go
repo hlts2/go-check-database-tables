@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -39,7 +40,10 @@ func ls(cmd *cobra.Command, args []string) error {
 	progress := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 	progress.Start()
 
-	dao := factories.FactoryTableDao(databaseType, c)
+	dao := factories.FactoryTableDao(dbms, c)
+	if dao == nil {
+		return errors.New("Invaild Dabase Management System")
+	}
 	tables, err := dao.GetTables()
 	if err != nil {
 		progress.Stop()
