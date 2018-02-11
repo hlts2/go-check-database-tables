@@ -30,16 +30,16 @@ var user string
 var password string
 var dbms string
 var database string
-var databaseTable string
+var table string
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&host, "Host", "H", "localhost", "Host Name（localhost）")
 	rootCmd.PersistentFlags().IntVarP(&port, "port", "p", 3306, "Port（3306）")
 	rootCmd.PersistentFlags().StringVarP(&user, "user", "u", "root", "User Name（root）")
 	rootCmd.PersistentFlags().StringVarP(&password, "Password", "P", "", "Password")
-	rootCmd.PersistentFlags().StringVarP(&dbms, "type", "t", "mysql", "Database Management System（mysql）")
-	rootCmd.PersistentFlags().StringVarP(&database, "database", "d", "", "Database Name")
-	rootCmd.Flags().StringVarP(&databaseTable, "Table", "T", "", "Database Table")
+	rootCmd.PersistentFlags().StringVarP(&dbms, "dbms", "d", "mysql", "Database Management System（mysql）")
+	rootCmd.PersistentFlags().StringVarP(&database, "name", "n", "", "Database Name")
+	rootCmd.Flags().StringVarP(&table, "table", "t", "", "Database Table")
 }
 
 func root(cmd *cobra.Command, args []string) error {
@@ -56,9 +56,9 @@ func root(cmd *cobra.Command, args []string) error {
 
 	dao := factories.FactoryTableDao(dbms, c)
 	if dao == nil {
-		return errors.New("Invalid Dabase Management System")
+		return errors.New("Invalid dabase management system")
 	}
-	describeTables, err := dao.GetTableDescribe(databaseTable)
+	describeTables, err := dao.GetDescribeTable(table)
 	if err != nil {
 		progress.Stop()
 		return err

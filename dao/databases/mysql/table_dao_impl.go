@@ -35,7 +35,7 @@ func (impl TableDaoImpl) GetTables() (models.Tables, error) {
 	return tables, nil
 }
 
-func (impl TableDaoImpl) GetTableDescribe(tableName string) (models.DescribeTables, error) {
+func (impl TableDaoImpl) GetDescribeTable(with string) (models.DescribeTables, error) {
 	db, err := sql.Open("mysql", impl.DSN())
 	if err != nil {
 		return nil, err
@@ -44,7 +44,7 @@ func (impl TableDaoImpl) GetTableDescribe(tableName string) (models.DescribeTabl
 	defer dbmap.Db.Close()
 
 	var describeTables models.DescribeTables
-	_, err = dbmap.Select(&describeTables, fmt.Sprintf("Describe %s", tableName))
+	_, err = dbmap.Select(&describeTables, fmt.Sprintf("Describe %s", with))
 	if err == sql.ErrNoRows {
 		return nil, nil
 	} else if err != nil {

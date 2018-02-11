@@ -42,7 +42,7 @@ func ls(cmd *cobra.Command, args []string) error {
 
 	dao := factories.FactoryTableDao(dbms, c)
 	if dao == nil {
-		return errors.New("Invaild Dabase Management System")
+		return errors.New("Invaild dabase management system")
 	}
 	tables, err := dao.GetTables()
 	if err != nil {
