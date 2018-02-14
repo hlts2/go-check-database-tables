@@ -33,11 +33,11 @@ var database string
 var table string
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&host, "Host", "H", "localhost", "Host Name（localhost）")
-	rootCmd.PersistentFlags().IntVarP(&port, "port", "p", 3306, "Port（3306）")
-	rootCmd.PersistentFlags().StringVarP(&user, "user", "u", "root", "User Name（root）")
+	rootCmd.PersistentFlags().StringVarP(&host, "Host", "H", "localhost", "Host Name")
+	rootCmd.PersistentFlags().IntVarP(&port, "port", "p", 3306, "Port")
+	rootCmd.PersistentFlags().StringVarP(&user, "user", "u", "root", "User Name")
 	rootCmd.PersistentFlags().StringVarP(&password, "Password", "P", "", "Password")
-	rootCmd.PersistentFlags().StringVarP(&dbms, "dbms", "d", "mysql", "Database Management System（mysql）")
+	rootCmd.PersistentFlags().StringVarP(&dbms, "dbms", "d", "mysql", "Database Management System")
 	rootCmd.PersistentFlags().StringVarP(&database, "name", "n", "", "Database Name")
 	rootCmd.Flags().StringVarP(&table, "table", "t", "", "Database Table")
 }
