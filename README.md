@@ -2,7 +2,7 @@
 
 go-check-database-tables is command line tool for cheking database table
 
-## install
+# install
 
 ```
 go get github.com/hlts2/go-check-database-tables
